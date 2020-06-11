@@ -549,6 +549,8 @@ private:
         OPTION_MISSION_LAND_FW_APPROACH=(1<<4),
         OPTION_FS_QRTL=(1<<5),
         OPTION_IDLE_GOV_MANUAL=(1<<6),
+        OPTION_DISARMED_TILT=(1<<7),
+        OPTION_DELAY_ARMING=(1<<8),
     };
 
     AP_Float takeoff_failure_scalar;
@@ -557,6 +559,11 @@ private:
     uint32_t takeoff_time_limit_ms;
 
     float last_land_final_agl;
+
+
+    // oneshot with duration ARMING_DELAY_MS used by quadplane to delay spoolup after arming:
+    // ignored unless OPTION_DELAY_ARMING or OPTION_TILT_DISARMED is set
+    bool delay_arming;
 
     /*
       return true if current mission item is a vtol takeoff
