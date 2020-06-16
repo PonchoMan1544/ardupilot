@@ -1982,16 +1982,11 @@ void QuadPlane::motors_output(bool run_rate_controller)
        2) to allow motors to return to vertical (OPTION_DISARMED_TILT)
      */
     if ((options & OPTION_DISARMED_TILT) || (options & OPTION_DELAY_ARMING)) {
-        constexpr uint32_t ARMING_DELAY_MS = 2000;
-        if (delay_arming) {
-            if (AP_HAL::millis() - hal.util->get_last_armed_change() < ARMING_DELAY_MS) {
-                // delay motor start after arming
-                motors->set_desired_spool_state(AP_Motors::DesiredSpoolState::SHUT_DOWN);
-                motors->output();
-                return;
-            } else {
-                delay_arming = false;
-            }
+        if (plane.arming.get_delay_arming()) {
+            // delay motor start after arming
+            motors->set_desired_spool_state(AP_Motors::DesiredSpoolState::SHUT_DOWN);
+            motors->output();
+            return;
         }
     }
 
